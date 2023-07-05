@@ -50,7 +50,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   void _buttonPushed() {
     print("PUSHED");
-    final message = Message(name: 'Button Message', payload: '');
+    final message = Message(name: 'Button Message', payload: 'just a button');
     BlocProvider.of<MessageBoardCubit>(context).addMessage(message);
   }
 
