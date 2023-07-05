@@ -41,8 +41,8 @@ class MessageBoardCubit extends Cubit<MessageBoardState> {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       // Map<String, dynamic> data = message.data;
       print("THE DATA IS IN");
-      var mess = Message(name: 'svx', payload: message.data);
-      print(message.data);
+
+      var mess = Message(name: 'msg', data: message.data, notification: message.notification);
 
       List<Message> newList = [...state.messageList!, mess];
       emit(state.copyWith(messageList: newList));

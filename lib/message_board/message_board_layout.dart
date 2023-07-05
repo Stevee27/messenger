@@ -17,7 +17,7 @@ class MessageBoardLayout extends StatelessWidget {
       return ListView.builder(
         itemCount: items.length,
         itemBuilder: (BuildContext context, int index) {
-          return Text('${items[index].name}  ${items[index].payload}');
+          return Text('${items[index].name}  ${items[index].data} ${items[index].notification}');
         },
       );
     });
