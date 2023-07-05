@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'firebase_options.dart';
 
@@ -8,11 +9,14 @@ import 'message_board/bloc/message_board_bloc.dart';
 import 'message_board/message_board_layout.dart';
 import 'models/mesage.dart';
 
+FirebaseMessaging messaging = FirebaseMessaging.instance;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // String? token = await messaging.getToken();
   runApp(const MyApp());
 }
 

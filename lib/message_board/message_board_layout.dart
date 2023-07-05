@@ -8,11 +8,16 @@ class MessageBoardLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MessageBoardCubit, MessageBoardState>(builder: (context, state) {
+      if (state.status == MessageBoardStatus.initial) {
+        BlocProvider.of<MessageBoardCubit>(context).getToken(context);
+      } else if (state.status == MessageBoardStatus.send_token) {
+        BlocProvider.of<MessageBoardCubit>(context).sendToken(context);
+      }
       var items = state.messageList!;
       return ListView.builder(
         itemCount: items.length,
         itemBuilder: (BuildContext context, int index) {
-          return Text(items[index].name);
+          return Text('${items[index].name}  ${items[index].payload}');
         },
       );
     });
