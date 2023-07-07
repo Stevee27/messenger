@@ -39,15 +39,9 @@ class MessageBoardCubit extends Cubit<MessageBoardState> {
   sendToken(context) async {
     emit(state.copyWith(status: MessageBoardStatus.ready));
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // Map<String, dynamic> data = message.data;
-      print("THE DATA IS IN");
-
       var mess = Message(name: 'msg', data: message.data, notification: message.notification);
-
       List<Message> newList = [...state.messageList!, mess];
       emit(state.copyWith(messageList: newList));
-
-      // print('The user ${user.name} liked your picture "${picture.title}"!');
     });
 
     //TODO: SEND THRU REPO
