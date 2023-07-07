@@ -2,27 +2,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:messenger/message_board/notification_screen.dart';
 
 import 'api/firebase_api.dart';
 import 'message_board/bloc/message_board_bloc.dart';
 import 'message_board/message_board_layout.dart';
 import 'models/mesage.dart';
 
-FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  // await Firebase.initializeApp();
-
-  print("Handling a background message: ${message.messageId}");
-}
+// FirebaseMessaging messaging = FirebaseMessaging.instance;
+final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseApi().initNotifications();
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 
@@ -32,17 +25,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: MultiBlocProvider(
-          providers: [
-            BlocProvider(create: (context) => MessageBoardCubit()),
-          ],
-          child: const MyHomePage(title: 'Flutter Cloud Messenger'),
-        ));
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      navigatorKey: navigatorKey,
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => MessageBoardCubit()),
+        ],
+        child: const MyHomePage(title: 'Flutter Cloud Messenger'),
+      ),
+      routes: {
+        NotificationScreen.route: (context) => const NotificationScreen(),
+      },
+    );
   }
 }
 
@@ -68,7 +66,8 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: const Center(child: MessageBoardLayout()),
+      // body: const Center(child: MessageBoardLayout()),
+      body: const Center(child: Text('The HomePage')),
       floatingActionButton: FloatingActionButton(
         onPressed: _buttonPushed,
         tooltip: 'Push Button',
