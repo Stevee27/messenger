@@ -1,9 +1,14 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:messenger/main.dart';
+import 'package:messenger/message_board/bloc/message_board_bloc.dart';
+import 'package:messenger/message_board/message_board_layout.dart';
 import 'package:messenger/message_board/notification_screen.dart';
+import 'package:messenger/nav/bloc/nav_cubit.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
   print('Title: ${message.notification?.title}');
@@ -26,9 +31,12 @@ class FirebaseApi {
   void handleMessage(RemoteMessage? message) {
     if (message == null) return;
 
-    navigatorKey.currentState?.pushNamed(
-      NotificationScreen.route,
-      arguments: message,
+    var currentContext = ContextService.navigatorKey.currentContext!;
+    BlocProvider.of<MessageBoardCubit>(currentContext).addMessage(message);
+    // BlocProvider.of<NavCubit>(currentContext).showMessageBoard();
+    ContextService.navigatorKey.currentState?.pushNamed(
+      MessageBoardLayout.route,
+      //   arguments: message,
     );
   }
 

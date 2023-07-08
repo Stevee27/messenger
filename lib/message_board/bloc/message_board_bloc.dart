@@ -51,8 +51,9 @@ class MessageBoardCubit extends Cubit<MessageBoardState> {
     //TODO: SEND THRU REPO
   }
 
-  addMessage(Message message) {
-    List<Message> newList = [...state.messageList!, message];
+  addMessage(RemoteMessage message) {
+    var mess = Message(name: 'msg', data: message.data, notification: message.notification);
+    List<Message> newList = [...state.messageList!, mess];
     emit(state.copyWith(messageList: newList));
   }
 }

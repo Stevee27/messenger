@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:messenger/message_board/bloc/message_board_bloc.dart';
 
 class MessageBoardLayout extends StatelessWidget {
+  static const valueKey = ValueKey<String>("MessageBoardLayout");
   const MessageBoardLayout({super.key});
   static const route = 'messagePage';
 
