@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../api/firebase_api.dart';
 import '../../models/mesage.dart';
 import 'message_board_repo.dart';
 
@@ -32,6 +34,8 @@ class MessageBoardCubit extends Cubit<MessageBoardState> {
   final messageBoardRepo = MessageBoardRepository();
 
   getToken(context) async {
+    await Firebase.initializeApp();
+    FirebaseApi().initNotifications();
     String? token = await FirebaseMessaging.instance.getToken();
     emit(state.copyWith(status: MessageBoardStatus.send_token, token: token));
   }

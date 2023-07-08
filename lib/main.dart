@@ -14,8 +14,8 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  FirebaseApi().initNotifications();
+  // await Firebase.initializeApp();
+  // FirebaseApi().initNotifications();
   runApp(const MyApp());
 }
 
@@ -35,7 +35,8 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => MessageBoardCubit()),
         ],
-        child: const MyHomePage(title: 'Flutter Cloud Messenger'),
+        // child: MyHomePage(title: 'Flutter Cloud Messenger'),
+        child: MessageBoardLayout(),
       ),
       routes: {
         NotificationScreen.route: (context) => const NotificationScreen(),
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title}) {}
 
   final String title;
 
@@ -67,7 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       // body: const Center(child: MessageBoardLayout()),
-      body: const Center(child: Text('The HomePage')),
+      // body: const Center(child: Text('The HomePage')),
+      body: Text('The HomePage'),
       floatingActionButton: FloatingActionButton(
         onPressed: _buttonPushed,
         tooltip: 'Push Button',
