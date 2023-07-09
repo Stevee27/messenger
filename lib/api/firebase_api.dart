@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:messenger/main.dart';
-import 'package:messenger/message_board/bloc/message_board_bloc.dart';
-import 'package:messenger/message_board/message_board_layout.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../main.dart';
+import '../message_board/bloc/message_board_bloc.dart';
+import '../message_board/message_board_layout.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
   // print('Title: ${message.notification?.title}');
@@ -77,19 +79,21 @@ class FirebaseApi {
     FirebaseMessaging.onMessage.listen((message) {
       final notification = message.notification;
       if (notification == null) return;
-      _localNotifications.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-            android: AndroidNotificationDetails(
-          _androidChannel.id,
-          _androidChannel.name,
-          channelDescription: _androidChannel.description,
-          icon: '@drawable/ic_launcher',
-        )),
-        payload: jsonEncode(message.toMap()),
-      );
+      if (ContextService.lifecycleState != AppLifecycleState.resumed) {
+        _localNotifications.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+              android: AndroidNotificationDetails(
+            _androidChannel.id,
+            _androidChannel.name,
+            channelDescription: _androidChannel.description,
+            icon: '@drawable/ic_launcher',
+          )),
+          payload: jsonEncode(message.toMap()),
+        );
+      }
     });
   }
 
