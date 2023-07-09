@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api/firebase_api.dart';
 import '../../models/mesage.dart';
@@ -60,7 +63,21 @@ class MessageBoardCubit extends Cubit<MessageBoardState> {
     emit(state.copyWith(messageList: newList));
   }
 
-  addBackgroundMessages() {
+  addBackgroundMessages() async {
     print('ADDING SHARED PREFERENCED MESSAGES');
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String>? items = prefs.getStringList('items');
+    if (items != null) {
+      List<Message> updates = [];
+      for (final item in items) {
+        var rm = RemoteMessage.fromMap(jsonDecode(item));
+        var mess = Message(messageId: rm.messageId!, name: 'bloc', data: rm.data, notification: rm.notification);
+        updates.add(mess);
+        print(rm.toString());
+      }
+      List<Message> newList = [...state.messageList!, ...updates];
+      prefs.remove('items');
+      emit(state.copyWith(messageList: newList));
+    }
   }
 }

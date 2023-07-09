@@ -1,13 +1,9 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:messenger/message_board/notification_screen.dart';
 
-import 'api/firebase_api.dart';
 import 'message_board/bloc/message_board_bloc.dart';
 import 'message_board/message_board_layout.dart';
-import 'models/mesage.dart';
 import 'nav/bloc/nav_cubit.dart';
 
 // FirebaseMessaging messaging = FirebaseMessaging.instance;

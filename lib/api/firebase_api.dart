@@ -1,14 +1,12 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:messenger/main.dart';
 import 'package:messenger/message_board/bloc/message_board_bloc.dart';
 import 'package:messenger/message_board/message_board_layout.dart';
-import 'package:messenger/message_board/notification_screen.dart';
-import 'package:messenger/nav/bloc/nav_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
   // print('Title: ${message.notification?.title}');
@@ -16,6 +14,15 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
   print('Payload: ${message.data}');
   if (message.notification == null) {
     print('Need to handle when there is no remoteNotification');
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String>? items = prefs.getStringList('items');
+    var json = jsonEncode(message.toMap());
+    if (items == null) {
+      prefs.setStringList('items', [json]);
+    } else {
+      var update = [...items, json];
+      prefs.setStringList('items', update);
+    }
   }
 }
 
