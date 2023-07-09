@@ -1,12 +1,14 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class Message {
+  final String messageId;
   final String name;
   final Map data;
   final RemoteNotification? notification;
   final String? payload;
 
   Message({
+    required this.messageId,
     required this.name,
     required this.data,
     this.notification,
@@ -15,6 +17,7 @@ class Message {
 
   Map<String, dynamic> toMap() {
     return {
+      'messageId': messageId,
       'name': name,
       'payload': payload,
     };
@@ -26,6 +29,7 @@ class Message {
 
   factory Message.empty() {
     return Message(
+      messageId: '',
       name: '',
       data: {},
     );

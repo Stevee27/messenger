@@ -11,9 +11,12 @@ import 'package:messenger/message_board/notification_screen.dart';
 import 'package:messenger/nav/bloc/nav_cubit.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
-  print('Title: ${message.notification?.title}');
-  print('Body: ${message.notification?.body}');
+  // print('Title: ${message.notification?.title}');
+  // print('Body: ${message.notification?.body}');
   print('Payload: ${message.data}');
+  if (message.notification == null) {
+    print('Need to handle when there is no remoteNotification');
+  }
 }
 
 class FirebaseApi {
@@ -33,7 +36,6 @@ class FirebaseApi {
 
     var currentContext = ContextService.navigatorKey.currentContext!;
     BlocProvider.of<MessageBoardCubit>(currentContext).addMessage(message);
-    // BlocProvider.of<NavCubit>(currentContext).showMessageBoard();
     ContextService.navigatorKey.currentState?.pushNamed(
       MessageBoardLayout.route,
       //   arguments: message,

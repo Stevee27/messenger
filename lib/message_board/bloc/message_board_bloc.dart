@@ -41,18 +41,21 @@ class MessageBoardCubit extends Cubit<MessageBoardState> {
   }
 
   sendToken(context) async {
+    // await Send token to service
     emit(state.copyWith(status: MessageBoardStatus.ready));
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      var mess = Message(name: 'msg', data: message.data, notification: message.notification);
-      List<Message> newList = [...state.messageList!, mess];
-      emit(state.copyWith(messageList: newList));
+      addMessage(message);
+      // var mess =
+      //     Message(messageId: message.messageId!, name: 'msg', data: message.data, notification: message.notification);
+      // List<Message> newList = [...state.messageList!, mess];
+      // emit(state.copyWith(messageList: newList));
     });
-
-    //TODO: SEND THRU REPO
   }
 
   addMessage(RemoteMessage message) {
-    var mess = Message(name: 'msg', data: message.data, notification: message.notification);
+    if (state.messageList!.isNotEmpty && state.messageList!.last.messageId == message.messageId) return;
+    var mess =
+        Message(messageId: message.messageId!, name: 'bloc', data: message.data, notification: message.notification);
     List<Message> newList = [...state.messageList!, mess];
     emit(state.copyWith(messageList: newList));
   }
