@@ -35,8 +35,33 @@ class PreApp extends StatelessWidget {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print('state = $state');
+    if (state == AppLifecycleState.resumed) {
+      BlocProvider.of<MessageBoardCubit>(context).addBackgroundMessages();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,36 +88,27 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key, required this.title}) {}
+// class MyHomePage extends StatefulWidget {
+//   MyHomePage({super.key, required this.title}) {}
 
-  final String title;
+//   final String title;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
 
-class _MyHomePageState extends State<MyHomePage> {
-  void _buttonPushed() {
-    final message = Message(messageId: "xxxxxxxx!", name: 'Button Message', data: {'mm': 'just a button'});
-    // BlocProvider.of<MessageBoardCubit>(context).addMessage(message);
-  }
+// class _MyHomePageState extends State<MyHomePage> {
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      // body: const Center(child: MessageBoardLayout()),
-      // body: const Center(child: Text('The HomePage')),
-      body: Text('The HomePage'),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _buttonPushed,
-        tooltip: 'Push Button',
-        child: const Icon(Icons.question_mark),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+//         title: Text(widget.title),
+//       ),
+//       // body: const Center(child: MessageBoardLayout()),
+//       // body: const Center(child: Text('The HomePage')),
+//       body: Text('The HomePage'),
+//     );
+//   }
+// }

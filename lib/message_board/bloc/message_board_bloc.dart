@@ -59,4 +59,8 @@ class MessageBoardCubit extends Cubit<MessageBoardState> {
     List<Message> newList = [...state.messageList!, mess];
     emit(state.copyWith(messageList: newList));
   }
+
+  addBackgroundMessages() {
+    print('ADDING SHARED PREFERENCED MESSAGES');
+  }
 }
