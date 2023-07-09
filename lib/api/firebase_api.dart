@@ -13,15 +13,16 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
   // print('Body: ${message.notification?.body}');
   print('Payload: ${message.data}');
   if (message.notification == null) {
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.reload();
     print('Need to handle when there is no remoteNotification');
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final List<String>? items = prefs.getStringList('items');
+    final List<String>? items = prefs.getStringList('messi');
     var json = jsonEncode(message.toMap());
     if (items == null) {
-      prefs.setStringList('items', [json]);
+      prefs.setStringList('messi', [json]);
     } else {
       var update = [...items, json];
-      prefs.setStringList('items', update);
+      prefs.setStringList('messi', update);
     }
   }
 }
